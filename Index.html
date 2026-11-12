@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>END</title>
+    <!-- Load Tailwind CSS for responsive layout and core styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Google Font "Inter" for clean, bold typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Apply Inter font globally, enforce full-viewport centering, and prevent scrolling */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100dvh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Massive Vibrant Red 3D Tactile Button Styling */
+        .end-btn {
+            width: min(74vw, 68vh, 480px);
+            height: min(74vw, 68vh, 480px);
+            background: radial-gradient(circle at 35% 30%, #ff4d4d 0%, #ef4444 45%, #dc2626 85%, #b91c1c 100%);
+            color: #ffffff;
+            box-shadow: 
+                0 22px 0 #7f1d1d,
+                0 32px 0 #450a0a,
+                0 45px 70px rgba(220, 38, 38, 0.55),
+                inset 0 4px 6px rgba(255, 255, 255, 0.45),
+                inset 0 -8px 16px rgba(127, 29, 29, 0.6);
+            transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        box-shadow 0.15s ease, 
+                        background 0.35s ease,
+                        color 0.35s ease,
+                        filter 0.2s ease;
+        }
+
+        .end-btn:hover {
+            filter: brightness(1.06);
+            transform: translateY(-3px);
+            box-shadow: 
+                0 25px 0 #7f1d1d,
+                0 35px 0 #450a0a,
+                0 52px 80px rgba(239, 68, 68, 0.68),
+                inset 0 4px 8px rgba(255, 255, 255, 0.55),
+                inset 0 -8px 16px rgba(127, 29, 29, 0.6);
+        }
+
+        /* Realistic Pressed-Down State (Active & JS-triggered hold) */
+        .end-btn:active,
+        .end-btn.is-pressed {
+            transform: translateY(20px) scale(0.975);
+            filter: brightness(0.95);
+            box-shadow: 
+                0 4px 0 #7f1d1d,
+                0 8px 0 #450a0a,
+                0 12px 24px rgba(185, 28, 28, 0.45),
+                inset 0 4px 10px rgba(0, 0, 0, 0.35),
+                inset 0 -2px 6px rgba(127, 29, 29, 0.5);
+        }
+
+        /* Yellow / Gold "Done" State Styling */
+        .end-btn.is-done {
+            background: radial-gradient(circle at 35% 30%, #fef08a 0%, #facc15 45%, #eab308 85%, #ca8a04 100%);
+            color: #1f1600;
+            box-shadow: 
+                0 22px 0 #a16207,
+                0 32px 0 #713f12,
+                0 45px 70px rgba(234, 179, 8, 0.55),
+                inset 0 4px 8px rgba(255, 255, 255, 0.7),
+                inset 0 -8px 16px rgba(161, 98, 7, 0.45);
+        }
+
+        .end-btn.is-done:hover {
+            filter: brightness(1.04);
+            transform: translateY(-3px);
+            box-shadow: 
+                0 25px 0 #a16207,
+                0 35px 0 #713f12,
+                0 52px 80px rgba(250, 204, 21, 0.68),
+                inset 0 4px 10px rgba(255, 255, 255, 0.8),
+                inset 0 -8px 16px rgba(161, 98, 7, 0.45);
+        }
+
+        .end-btn.is-done:active,
+        .end-btn.is-done.is-pressed {
+            transform: translateY(20px) scale(0.975);
+            filter: brightness(0.96);
+            box-shadow: 
+                0 4px 0 #a16207,
+                0 8px 0 #713f12,
+                0 12px 24px rgba(161, 98, 7, 0.45),
+                inset 0 4px 10px rgba(0, 0, 0, 0.25),
+                inset 0 -2px 6px rgba(161, 98, 7, 0.45);
+        }
+
+        .end-btn.is-done .btn-label {
+            text-shadow: 0 2px 2px rgba(255, 255, 255, 0.55);
+        }
+
+        .btn-label {
+            text-shadow: 0 6px 8px rgba(69, 10, 10, 0.75);
+            transition: text-shadow 0.35s ease;
+        }
+
+        /* Reset Button Visibility & Tactile Styling */
+        .reset-btn {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(14px) scale(0.92);
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.35s ease, background-color 0.2s ease, box-shadow 0.1s ease;
+            box-shadow: 0 6px 0 #0f172a, 0 12px 24px rgba(0, 0, 0, 0.45);
+        }
+
+        .reset-btn.is-visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .reset-btn:active {
+            transform: translateY(4px) scale(0.97);
+            box-shadow: 0 2px 0 #0f172a, 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Celebratory expanding shockwave ring */
+        @keyframes shockwave {
+            0% {
+                transform: scale(0.96);
+                opacity: 0.9;
+                border-width: 12px;
+            }
+            100% {
+                transform: scale(2.1);
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        .ring-burst {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            border-style: solid;
+            border-color: #facc15;
+            pointer-events: none;
+            animation: shockwave 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Background ambient radial glow pulse on victory */
+        @keyframes bgFlash {
+            0% {
+                opacity: 0.5;
+                transform: scale(0.75);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.8);
+            }
+        }
+
+        .ambient-pulse {
+            position: absolute;
+            width: 85vmax;
+            height: 85vmax;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.38) 0%, rgba(251, 191, 36, 0.12) 45%, rgba(220, 38, 38, 0) 72%);
+            pointer-events: none;
+            animation: bgFlash 1.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-950">
+
+    <!-- Full-screen HTML5 Canvas for Confetti Celebration -->
+    <canvas id="confetti-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-20"></canvas>
+
+    <!-- Container for ambient background glow pulses -->
+    <div id="fx-layer" class="fixed inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- Centered Main Stage (Button + Conditional Reset Button) -->
+    <main class="relative z-10 flex flex-col items-center justify-center">
+        <!-- Centered Button Wrapper -->
+        <div id="btn-wrapper" class="relative flex items-center justify-center">
+            <!-- The Single Massive Button ("END" -> "Done") -->
+            <button 
+                id="end-button"
+                type="button"
+                aria-label="END"
+                class="end-btn relative z-10 rounded-full flex items-center justify-center font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-widest uppercase cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300"
+            >
+                <span id="button-text" class="btn-label pointer-events-none">
+                    END
+                </span>
+            </button>
+        </div>
+
+        <!-- Reset Button (Hidden initially, revealed only when button says Done) -->
+        <button
+            id="reset-button"
+            type="button"
+            aria-label="Reset"
+            class="reset-btn mt-12 px-9 py-3.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600/80 font-extrabold text-lg sm:text-xl tracking-wider uppercase cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400"
+        >
+            Reset
+        </button>
+    </main>
+
+    <script>
+        /**
+         * Grand Victory Fanfare Synthesizer, Continuous Confetti Rain & State Controller
+         * Uses native Web Audio API & HTML5 Canvas with zero external assets.
+         */
+        (function () {
+            const button = document.getElementById('end-button');
+            const buttonText = document.getElementById('button-text');
+            const resetButton = document.getElementById('reset-button');
+            const btnWrapper = document.getElementById('btn-wrapper');
+            const fxLayer = document.getElementById('fx-layer');
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx2d = canvas.getContext('2d');
+            
+            let audioCtx = null;
+            let activeNodes = [];
+            let confettiParticles = [];
+            let animationFrameId = null;
+            let isDone = false;
+
+            const CONFETTI_COLORS = [
+                '#ef4444', '#f87171', '#facc15', '#f59e0b',
+                '#34d399', '#38bdf8', '#a78bfa', '#ffffff', '#fb7185'
+            ];
+
+            // Keep confetti canvas synced to viewport size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            /**
+             * Lazily initializes or resumes the AudioContext on user gesture
+             */
+            function getAudioContext() {
+                if (!audioCtx) {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    audioCtx = new AudioContextClass();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                return audioCtx;
+            }
+
+            /**
+             * Immediately stops and disconnects any currently playing Web Audio nodes
+             */
+            function stopAllAudio() {
+                activeNodes.forEach(({ osc, gain }) => {
+                    try {
+                        if (gain && audioCtx) {
+                            gain.gain.cancelScheduledValues(audioCtx.currentTime);
+                            gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+                        }
+                        if (osc) {
+                            osc.stop();
+                            osc.disconnect();
+                        }
+                    } catch (_) {
+                        // Ignore already-stopped oscillators
+                    }
+                });
+                activeNodes = [];
+            }
+
+            /**
+             * Plays a rich, brass-like synthesized tone with vibrato and filter envelope.
+             */
+            function playBrassNote(ctx, freq, startTime, duration, volume = 0.20, vibrato = false) {
+                try {
+                    const osc1 = ctx.createOscillator();
+                    const osc2 = ctx.createOscillator();
+                    const filter = ctx.createBiquadFilter();
+                    const gainNode = ctx.createGain();
+
+                    osc1.type = 'sawtooth';
+                    osc2.type = 'triangle';
+
+                    osc1.frequency.setValueAtTime(freq, startTime);
+                    osc2.frequency.setValueAtTime(freq * 1.0028, startTime);
+
+                    // Optional expressive trumpet vibrato on sustained finale notes
+                    if (vibrato) {
+                        const lfo = ctx.createOscillator();
+                        const lfoGain = ctx.createGain();
+                        lfo.frequency.setValueAtTime(5.5, startTime + 0.25);
+                        lfoGain.gain.setValueAtTime(0.01, startTime);
+                        lfoGain.gain.linearRampToValueAtTime(freq * 0.008, startTime + 0.45);
+                        lfo.connect(lfoGain);
+                        lfoGain.connect(osc1.frequency);
+                        lfoGain.connect(osc2.frequency);
+                        lfo.start(startTime + 0.2);
+                        lfo.stop(startTime + duration + 0.15);
+                        activeNodes.push({ osc: lfo, gain: null });
+                    }
+
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(450, startTime);
+                    filter.frequency.exponentialRampToValueAtTime(3200, startTime + 0.07);
+                    filter.frequency.exponentialRampToValueAtTime(1600, startTime + duration);
+
+                    gainNode.gain.setValueAtTime(0.0001, startTime);
+                    gainNode.gain.linearRampToValueAtTime(volume, startTime + 0.03);
+                    gainNode.gain.setValueAtTime(volume * 0.88, startTime + duration * 0.75);
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration + 0.12);
+
+                    osc1.connect(filter);
+                    osc2.connect(filter);
+                    filter.connect(gainNode);
+                    gainNode.connect(ctx.destination);
+
+                    osc1.start(startTime);
+                    osc2.start(startTime);
+                    osc1.stop(startTime + duration + 0.15);
+                    osc2.stop(startTime + duration + 0.15);
+
+                    activeNodes.push({ osc: osc1, gain: gainNode });
+                    activeNodes.push({ osc: osc2, gain: gainNode });
+                } catch (err) {
+                    console.error('Brass synthesis error:', err);
+                }
+            }
+
+            /**
+             * Synthesizes a deep resonant timpani / orchestral bass drum hit
+             */
+            function playTimpaniHit(ctx, freq, startTime, duration = 0.7, volume = 0.35) {
+                try {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq * 1.45, startTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq, startTime + 0.08);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 0.85, startTime + duration);
+
+                    gain.gain.setValueAtTime(0.0001, startTime);
+                    gain.gain.linearRampToValueAtTime(volume, startTime + 0.015);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + duration + 0.05);
+
+                    activeNodes.push({ osc, gain });
+                } catch (err) {
+                    console.error('Timpani synthesis error:', err);
+                }
+            }
+
+            /**
+             * Synthesizes a grand multi-measure triumphant victory fanfare (~4.3 seconds)
+             */
+            function playGrandVictoryFanfare() {
+                stopAllAudio();
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                const brassNotes = [
+                    // Measure 1: Opening Heraldic Fanfare
+                    { freq: 523.25, time: 0.00, dur: 0.18, vol: 0.21 }, // C5
+                    { freq: 392.00, time: 0.20, dur: 0.18, vol: 0.19 }, // G4
+                    { freq: 523.25, time: 0.40, dur: 0.18, vol: 0.22 }, // C5
+                    { freq: 659.25, time: 0.60, dur: 0.26, vol: 0.23 }, // E5
+                    { freq: 783.99, time: 0.88, dur: 0.42, vol: 0.24 }, // G5 (Held)
+                    { freq: 392.00, time: 0.88, dur: 0.42, vol: 0.15 }, // G4 Harmony
+
+                    // Measure 2: Triumphant Ascent
+                    { freq: 698.46, time: 1.36, dur: 0.20, vol: 0.22 }, // F5
+                    { freq: 880.00, time: 1.58, dur: 0.28, vol: 0.24 }, // A5
+                    { freq: 783.99, time: 1.88, dur: 0.22, vol: 0.23 }, // G5
+                    { freq: 659.25, time: 2.12, dur: 0.16, vol: 0.21 }, // E5
+                    { freq: 587.33, time: 2.30, dur: 0.16, vol: 0.21 }, // D5
+                    { freq: 659.25, time: 2.48, dur: 0.16, vol: 0.22 }, // E5
+                    { freq: 783.99, time: 2.66, dur: 0.22, vol: 0.24 }, // G5
+
+                    // Measure 3: Grand Finale Sustained Chord (C Major)
+                    { freq: 1046.50, time: 2.92, dur: 1.45, vol: 0.26, vib: true }, // C6 Lead Trumpet
+                    { freq: 783.99,  time: 2.92, dur: 1.45, vol: 0.17, vib: true }, // G5 Horn
+                    { freq: 659.25,  time: 2.92, dur: 1.45, vol: 0.17, vib: true }, // E5 Horn
+                    { freq: 523.25,  time: 2.92, dur: 1.45, vol: 0.18 },            // C5 Mid Brass
+                    { freq: 261.63,  time: 2.92, dur: 1.45, vol: 0.22 },            // C4 Trombone
+                    { freq: 130.81,  time: 2.92, dur: 1.45, vol: 0.22 }             // C3 Tuba Bass
+                ];
+
+                brassNotes.forEach(n => {
+                    playBrassNote(ctx, n.freq, now + n.time, n.dur, n.vol, Boolean(n.vib));
+                });
+
+                playTimpaniHit(ctx, 130.81, now + 0.00, 0.55, 0.30);
+                playTimpaniHit(ctx, 98.00,  now + 0.88, 0.65, 0.32);
+                playTimpaniHit(ctx, 116.54, now + 1.58, 0.60, 0.30);
+                playTimpaniHit(ctx, 98.00,  now + 2.66, 0.45, 0.28);
+                playTimpaniHit(ctx, 130.81, now + 2.92, 1.30, 0.42);
+            }
+
+            /**
+             * Spawns an explosive celebratory confetti burst from the center button
+             */
+            function launchConfettiBurst() {
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const count = 160;
+
+                for (let i = 0; i < count; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = 7 + Math.random() * 19;
+                    confettiParticles.push({
+                        x: centerX + (Math.random() - 0.5) * 80,
+                        y: centerY + (Math.random() - 0.5) * 80,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed - (4 + Math.random() * 6),
+                        gravity: 0.32,
+                        drag: 0.985,
+                        size: 7 + Math.random() * 9,
+                        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+                        rotation: Math.random() * 360,
+                        rotationSpeed: (Math.random() - 0.5) * 14,
+                        wobble: Math.random() * 10,
+                        wobbleSpeed: 0.06 + Math.random() * 0.08,
+                        shape: Math.random() > 0.35 ? 'rect' : 'circle',
+                        opacity: 1
+                    });
+                }
+
+                if (!animationFrameId) {
+                    renderConfettiLoop();
+                }
+            }
+
+            /**
+             * Spawns gentle continuous confetti rain from across the top of the screen
+             */
+            function spawnRainConfetti(count = 3) {
+                for (let i = 0; i < count; i++) {
+                    confettiParticles.push({
+                        x: Math.random() * canvas.width,
+                        y: -20 - Math.random() * 30,
+                        vx: (Math.random() - 0.5) * 2.4,
+                        vy: 2.2 + Math.random() * 3.2,
+                        gravity: 0.04,
+                        drag: 0.995,
+                        size: 7 + Math.random() * 8,
+                        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+                        rotation: Math.random() * 360,
+                        rotationSpeed: (Math.random() - 0.5) * 10,
+                        wobble: Math.random() * 10,
+                        wobbleSpeed: 0.05 + Math.random() * 0.06,
+                        shape: Math.random() > 0.35 ? 'rect' : 'circle',
+                        opacity: 1
+                    });
+                }
+            }
+
+            /**
+             * Physics and rendering loop for burst + continuous raining confetti
+             */
+            function renderConfettiLoop() {
+                ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Keep spawning continuous rain while in the Done state
+                if (isDone && confettiParticles.length < 320) {
+                    spawnRainConfetti(3);
+                }
+
+                for (let i = confettiParticles.length - 1; i >= 0; i--) {
+                    const p = confettiParticles[i];
+
+                    p.vy += p.gravity;
+                    p.vx *= p.drag;
+                    p.vy *= p.drag;
+                    p.wobble += p.wobbleSpeed;
+
+                    p.x += p.vx + Math.sin(p.wobble) * 1.4;
+                    p.y += p.vy;
+                    p.rotation += p.rotationSpeed;
+
+                    // Fade out smoothly near bottom of viewport
+                    if (p.y > canvas.height * 0.86) {
+                        p.opacity -= 0.025;
+                    }
+
+                    if (p.opacity <= 0 || p.y > canvas.height + 40) {
+                        confettiParticles.splice(i, 1);
+                        continue;
+                    }
+
+                    ctx2d.save();
+                    ctx2d.globalAlpha = Math.max(0, p.opacity);
+                    ctx2d.translate(p.x, p.y);
+                    ctx2d.rotate((p.rotation * Math.PI) / 180);
+                    ctx2d.scale(1, Math.cos(p.wobble));
+                    ctx2d.fillStyle = p.color;
+
+                    if (p.shape === 'rect') {
+                        ctx2d.fillRect(-p.size / 2, -p.size * 0.35, p.size, p.size * 0.7);
+                    } else {
+                        ctx2d.beginPath();
+                        ctx2d.arc(0, 0, p.size * 0.42, 0, Math.PI * 2);
+                        ctx2d.fill();
+                    }
+                    ctx2d.restore();
+                }
+
+                if (isDone || confettiParticles.length > 0) {
+                    animationFrameId = requestAnimationFrame(renderConfettiLoop);
+                } else {
+                    animationFrameId = null;
+                }
+            }
+
+            /**
+             * Triggers visual feedback: expanding golden shockwave ring & background glow pulse
+             */
+            function triggerVisualCelebration() {
+                const ring = document.createElement('div');
+                ring.className = 'ring-burst';
+                btnWrapper.appendChild(ring);
+                ring.addEventListener('animationend', () => ring.remove());
+
+                const pulse = document.createElement('div');
+                pulse.className = 'ambient-pulse';
+                fxLayer.appendChild(pulse);
+                pulse.addEventListener('animationend', () => pulse.remove());
+            }
+
+            /**
+             * Transitions main button into the yellow "Done" state, triggers fanfare,
+             * starts continuous confetti rain, and shows the Reset button.
+             */
+            function handleMainButtonTrigger() {
+                if (!isDone) {
+                    isDone = true;
+                    button.classList.add('is-done');
+                    button.setAttribute('aria-label', 'Done');
+                    buttonText.textContent = 'Done';
+                    resetButton.classList.add('is-visible');
+                }
+
+                playGrandVictoryFanfare();
+                launchConfettiBurst();
+                triggerVisualCelebration();
+            }
+
+            /**
+             * Resets everything back to the original clean red "END" state
+             */
+            function handleReset() {
+                isDone = false;
+
+                // Stop any active audio
+                stopAllAudio();
+
+                // Stop confetti loop and clear canvas immediately
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+                confettiParticles = [];
+                ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Restore button back to red "END" state and hide Reset button
+                button.classList.remove('is-done', 'is-pressed');
+                button.setAttribute('aria-label', 'END');
+                buttonText.textContent = 'END';
+                resetButton.classList.remove('is-visible');
+            }
+
+            // Main button & Reset button click handlers
+            button.addEventListener('click', handleMainButtonTrigger);
+            resetButton.addEventListener('click', handleReset);
+
+            // Realistic tactile pressed-down state for pointer, touch, and keyboard hold
+            function setPressed(pressed) {
+                if (pressed) {
+                    button.classList.add('is-pressed');
+                } else {
+                    button.classList.remove('is-pressed');
+                }
+            }
+
+            button.addEventListener('mousedown', () => setPressed(true));
+            window.addEventListener('mouseup', () => setPressed(false));
+
+            button.addEventListener('touchstart', () => setPressed(true), { passive: true });
+            button.addEventListener('touchend', () => setPressed(false), { passive: true });
+            button.addEventListener('touchcancel', () => setPressed(false), { passive: true });
+
+            button.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    setPressed(true);
+                }
+            });
+            button.addEventListener('keyup', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    setPressed(false);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
